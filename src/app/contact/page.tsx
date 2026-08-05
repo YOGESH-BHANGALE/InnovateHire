@@ -1,0 +1,12 @@
+import type { Metadata } from "next";
+import { Mail, MapPin, Phone, ArrowUpRight } from "lucide-react";
+import { ContactForm } from "@/components/forms/ContactForm";
+import { Badge } from "@/components/ui/Badge";
+import { GlassPanel } from "@/components/ui/GlassPanel";
+import { PageIntro } from "@/components/ui/PageIntro";
+
+export const metadata: Metadata = { title: "Contact", description: "Bring the rough idea, stubborn constraint, or next product bet." };
+
+export default function ContactPage() {
+  return <main><PageIntro eyebrow="Signal exchange" title={<>Let’s make the next move <span className="text-gradient">useful.</span></>} description="Bring the rough idea, the stubborn constraint, or the next product bet. We’ll help turn it into a system with signal." dark /><section className="bg-white px-6 py-28 md:px-12 lg:px-20 lg:py-36"><div className="section-shell grid gap-16 lg:grid-cols-[1.1fr_.9fr]"><div><Badge>Start a project</Badge><h2 className="mt-6 max-w-2xl font-display text-4xl font-bold tracking-[-0.07em] md:text-6xl">Tell us what needs to move.</h2><div className="mt-12"><ContactForm /></div></div><div className="space-y-4"><GlassPanel className="p-7"><MapPin aria-hidden="true" className="size-6 text-violet" /><p className="mt-8 text-[0.62rem] font-bold uppercase tracking-[0.2em] text-muted">Location</p><p className="mt-2 font-display text-2xl font-bold tracking-[-0.05em]">India / Remote</p><p className="mt-3 leading-7 text-muted">Built to travel well across teams, screens, and time zones.</p></GlassPanel><GlassPanel className="p-7"><Mail aria-hidden="true" className="size-6 text-cyan" /><p className="mt-8 text-[0.62rem] font-bold uppercase tracking-[0.2em] text-muted">Email</p><a className="mt-2 inline-flex items-center gap-2 font-display text-2xl font-bold tracking-[-0.05em] hover:text-violet" href="mailto:innovatehive.tech@gmail.com">innovatehive.tech@gmail.com <ArrowUpRight aria-hidden="true" className="size-4" /></a></GlassPanel><GlassPanel className="p-7"><Phone aria-hidden="true" className="size-6 text-violet" /><p className="mt-8 text-[0.62rem] font-bold uppercase tracking-[0.2em] text-muted">Phone / WhatsApp</p><a className="mt-2 inline-flex items-center gap-2 font-display text-2xl font-bold tracking-[-0.05em] hover:text-violet" href="tel:+918767555945">+91 87675 55945 <ArrowUpRight aria-hidden="true" className="size-4" /></a></GlassPanel></div></div></section></main>;
+}

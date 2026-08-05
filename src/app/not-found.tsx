@@ -1,0 +1,3 @@
+import Link from "next/link";
+
+export default function NotFound() { return <main className="grid min-h-[70vh] place-items-center bg-surface px-6 py-32 text-center"><div><p className="text-[0.62rem] font-bold uppercase tracking-[0.3em] text-violet">Signal not found</p><h1 className="mt-6 font-display text-6xl font-bold tracking-[-0.08em]">That orbit moved.</h1><p className="mx-auto mt-5 max-w-md leading-7 text-muted">The page you were looking for is not in this system anymore.</p><Link className="mt-8 inline-flex rounded-full bg-ink px-6 py-4 text-[0.62rem] font-bold uppercase tracking-[0.16em] text-white" href="/">Return home</Link></div></main>; }
