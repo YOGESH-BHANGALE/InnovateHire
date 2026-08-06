@@ -7,11 +7,12 @@ import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import { ProductFallback } from "@/components/three/WebGLFallback";
 import { products } from "@/lib/site-data";
 
 const ProductViewer = dynamic(() => import("@/components/three/ProductViewer").then((module) => module.ProductViewer), {
   ssr: false,
-  loading: () => <div aria-hidden="true" className="grid min-h-[26rem] place-items-center text-[0.62rem] font-mono uppercase tracking-[0.2em] text-white/50">loading product orbit / 01</div>,
+  loading: () => <ProductFallback />,
 });
 
 export function ProductsHero() {

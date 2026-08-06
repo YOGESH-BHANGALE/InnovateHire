@@ -4,6 +4,9 @@ export type ProductSlug = "medihive" | "vyaparhive" | "resumehive";
 export type ServiceSlug = "ai" | "web" | "software" | "brand-growth" | "app" | "seo" | "graphic-design";
 export type CaseStudyCategory = "all" | "product" | "healthcare" | "business-ops" | "career" | "growth";
 
+export type ProductDetailVariant = "care-graph" | "control-ledger" | "career-signal";
+export type ProductDetailIcon = "calendar" | "records" | "pharmacy" | "ledger" | "reconcile" | "report" | "structure" | "role-fit" | "export";
+
 export interface Product {
   slug: ProductSlug;
   name: string;
@@ -13,6 +16,71 @@ export interface Product {
   image?: string;
   features: string[];
 }
+
+export interface ProductSignal {
+  label: string;
+  description: string;
+  accent: Accent;
+}
+
+export interface ProductCapability {
+  title: string;
+  description: string;
+  accent: Accent;
+  icon: ProductDetailIcon;
+  layout: "large" | "stacked" | "wide";
+  metric?: { label: string; value: string }[];
+}
+
+export interface ProductDetailCta {
+  eyebrow: string;
+  title: string;
+  description: string;
+  inputLabel: string;
+  placeholder: string;
+  submitLabel: string;
+  note: string;
+}
+
+export interface ProductDetailBase extends Product {
+  variant: ProductDetailVariant;
+  hero: {
+    eyebrow: string;
+    headline: string;
+    emphasis: string;
+    description: string;
+    primaryCta: string;
+    secondaryCta: string;
+    imageAlt: string;
+  };
+  signals: ProductSignal[];
+  capabilities: ProductCapability[];
+  trustItems: string[];
+  cta: ProductDetailCta;
+}
+
+export interface CareGraphDetail extends ProductDetailBase {
+  variant: "care-graph";
+  graph: {
+    steps: Array<{ index: string; title: string; description: string; accent: Accent }>;
+    nodes: Array<{ id: "provider" | "patient" | "pharmacy"; label: string; icon: ProductDetailIcon; accent: Accent }>;
+  };
+}
+
+export interface ControlLedgerDetail extends ProductDetailBase {
+  variant: "control-ledger";
+  trace: {
+    stats: Array<{ value: string; label: string }>;
+    features: Array<{ title: string; description: string; accent: Accent; span: "half" | "full" }>;
+  };
+}
+
+export interface CareerSignalDetail extends ProductDetailBase {
+  variant: "career-signal";
+  process: Array<{ title: string; description: string; accent: Accent }>;
+}
+
+export type ProductDetail = CareGraphDetail | ControlLedgerDetail | CareerSignalDetail;
 
 export interface Service {
   slug: ServiceSlug;
@@ -160,6 +228,121 @@ export const products: Product[] = [
     features: ["Signal-first templates", "ATS-friendly structure", "Sharper career momentum"],
   },
 ];
+
+const productBySlug = (slug: ProductSlug) => {
+  const product = products.find((item) => item.slug === slug);
+  if (!product) throw new Error(`Unknown product: ${slug}`);
+  return product;
+};
+
+const detailBase = <T extends ProductDetail>(slug: ProductSlug, detail: Omit<T, keyof Product>): T => ({
+  ...productBySlug(slug),
+  ...detail,
+} as T);
+
+export const productDetails: ProductDetail[] = [
+  detailBase<CareGraphDetail>("medihive", {
+    variant: "care-graph",
+    hero: {
+      eyebrow: "V4.0 release",
+      headline: "Care that stays",
+      emphasis: "connected.",
+      description: "MediHive bridges the gap between patients, practitioners, and pharmacies through a unified care infrastructure built for the next era of medicine.",
+      primaryCta: "Request a care walkthrough",
+      secondaryCta: "View the care graph",
+      imageAlt: "MediHive unified care dashboard",
+    },
+    signals: [
+      { label: "Patient timeline", description: "One view of the journey", accent: "violet" },
+      { label: "Provider handoff", description: "Verified care transitions", accent: "cyan" },
+      { label: "Pharmacy sync", description: "Inventory-aware prescriptions", accent: "violet" },
+      { label: "Live telemetry", description: "Care signals in motion", accent: "cyan" },
+    ],
+    capabilities: [
+      { title: "Smart Appointments", description: "Advanced scheduling that prioritizes clinic flow and urgent interventions with clear clinical signals.", accent: "violet", icon: "calendar", layout: "large", metric: [{ label: "Latency", value: "0.4ms" }, { label: "Accuracy", value: "99.9%" }] },
+      { title: "Unified Records", description: "A singular source of truth for patient history, diagnostic imaging, and pharmacy logs.", accent: "cyan", icon: "records", layout: "stacked" },
+      { title: "Pharmacy Sync", description: "Automated e-prescriptions with direct inventory awareness at patient-preferred local pharmacies.", accent: "violet", icon: "pharmacy", layout: "wide" },
+    ],
+    trustItems: ["Secure links", "Role-based access", "One care timeline"],
+    cta: { eyebrow: "Join the ecosystem", title: "Build care people can navigate.", description: "Give every handoff a clearer signal, from first intake to the pharmacy door.", inputLabel: "Clinic or practice email", placeholder: "Enter clinic or practice email", submitLabel: "Request demo", note: "Trusted by 120+ medical centers globally." },
+    graph: {
+      steps: [
+        { index: "01", title: "Patient Intake Intelligence", description: "Automated triaging and demographic verification before the first consultation begins.", accent: "violet" },
+        { index: "02", title: "Provider Handoff Logs", description: "Encrypted handoff memos and vital sync between primary care and specialized networks.", accent: "cyan" },
+      ],
+      nodes: [
+        { id: "provider", label: "Provider", icon: "records", accent: "violet" },
+        { id: "patient", label: "Patient", icon: "role-fit", accent: "ink" },
+        { id: "pharmacy", label: "Pharmacy", icon: "pharmacy", accent: "ink" },
+      ],
+    },
+  }),
+  detailBase<ControlLedgerDetail>("vyaparhive", {
+    variant: "control-ledger",
+    hero: {
+      eyebrow: "VyaparHive antigravity edition",
+      headline: "Financial control",
+      emphasis: "without the drag.",
+      description: "Eliminate manual reconciliation and fiscal opacity. VyaparHive maps every movement to an immutable, cryptographically verifiable sequence.",
+      primaryCta: "Request a finance walkthrough",
+      secondaryCta: "See the control layer",
+      imageAlt: "VyaparHive financial control dashboard",
+    },
+    signals: [
+      { label: "Cash flow visibility", description: "See movement at the source", accent: "cyan" },
+      { label: "Ledger clarity", description: "Trace every decision", accent: "violet" },
+      { label: "Audit trail ready", description: "Immutable operating records", accent: "ink" },
+    ],
+    capabilities: [
+      { title: "Financial Overview", description: "Monitor liquidity, burn rates, and runway with predictive modeling built directly into the engine.", accent: "violet", icon: "ledger", layout: "large" },
+      { title: "Auto-Reconciliation", description: "Match transactions with bank statements using proprietary logic for absolute fidelity.", accent: "cyan", icon: "reconcile", layout: "stacked" },
+      { title: "Transparent Reporting", description: "Drill from high-level summaries into raw transaction metadata instantly without friction.", accent: "ink", icon: "report", layout: "wide" },
+    ],
+    trustItems: ["Role-based access", "Traceable changes", "Shared operating picture"],
+    cta: { eyebrow: "System integration", title: "Immutable trust by architecture.", description: "Transition to the financial operating system built for the next decade of enterprise velocity.", inputLabel: "Enterprise email", placeholder: "Enter enterprise email address", submitLabel: "Start integration", note: "GDPR compliant · SOC2 / Type II · Enterprise scale." },
+    trace: {
+      stats: [{ value: "100%", label: "Audit compliance" }, { value: "0ms", label: "Sync latency" }],
+      features: [
+        { title: "Reconciliation", description: "Smart matching of cross-border transactions and local bank feeds with zero manual drift.", accent: "cyan", span: "half" },
+        { title: "Reporting", description: "On-demand P&L and tax-ready summaries that reflect the millisecond.", accent: "violet", span: "half" },
+        { title: "Accountability", description: "Each entry is signed and dated, creating a permanent record that eliminates operational ambiguity and trust deficits.", accent: "ink", span: "full" },
+      ],
+    },
+  }),
+  detailBase<CareerSignalDetail>("resumehive", {
+    variant: "career-signal",
+    hero: {
+      eyebrow: "Product: ResumeHive / signal: live",
+      headline: "Make experience",
+      emphasis: "easier to see.",
+      description: "Precision-engineered resume building that transforms complex careers into high-impact digital signals recognized by global systems.",
+      primaryCta: "Build a stronger signal",
+      secondaryCta: "Explore role fit",
+      imageAlt: "ResumeHive ATS-friendly resume builder",
+    },
+    signals: [
+      { label: "ATS-friendly", description: "Verified against major engines", accent: "violet" },
+      { label: "Role-fit ready", description: "Dynamic keyword optimization", accent: "cyan" },
+      { label: "Export focus", description: "Pixel-perfect PDF and JSON", accent: "ink" },
+    ],
+    capabilities: [
+      { title: "Guided Structural Integrity", description: "A layout engine that keeps every section logically weighted for maximum scanability.", accent: "violet", icon: "structure", layout: "large" },
+      { title: "Role-fit Optimization", description: "Adaptive linguistic matching for specific industry requirements.", accent: "cyan", icon: "role-fit", layout: "stacked" },
+      { title: "Pixel-perfect Export", description: "Standardized digital formats for human review and machine consumption.", accent: "ink", icon: "export", layout: "stacked" },
+    ],
+    trustItems: ["Human: readable", "System: legible", "Result: impact"],
+    cta: { eyebrow: "Final call", title: "Put the right signal forward.", description: "A clearer route is waiting for your next career move. Start building your digital signal today.", inputLabel: "Work email", placeholder: "name@company.com", submitLabel: "Get started now", note: "Talk to a career advisor when you are ready." },
+    process: [
+      { title: "Structure", description: "Optimized layout hierarchy for zero-loss parsing by Applicant Tracking Systems.", accent: "violet" },
+      { title: "Relevance", description: "Smart contextual matching that identifies and highlights your core career signals.", accent: "cyan" },
+      { title: "Confidence", description: "A professional aesthetic that builds immediate trust during human review.", accent: "ink" },
+    ],
+  }),
+];
+
+export function getProductDetail(slug: string): ProductDetail | undefined {
+  return productDetails.find((detail) => detail.slug === slug);
+}
 
 export const testimonials: Testimonial[] = [
   {

@@ -60,7 +60,7 @@ export default function RootLayout({
       <body className={`${spaceGrotesk.variable} ${inter.variable}`}>
         <AnimationProvider>
           <SmoothScrollProvider>
-            <div className="grain-overlay min-h-screen overflow-hidden bg-white text-ink">
+            <div className="grain-overlay min-h-screen overflow-x-hidden bg-white text-ink">
               <MagneticCursor />
               <SiteHeader />
               <PageTransition>{children}</PageTransition>

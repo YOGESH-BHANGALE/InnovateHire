@@ -4,6 +4,7 @@ import { Float, OrbitControls } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useRef } from "react";
 import * as THREE from "three";
+import { ProductFallback, WebGLSafe } from "./WebGLFallback";
 
 function ProductShape() {
   const group = useRef<THREE.Group>(null);
@@ -16,5 +17,6 @@ function ProductShape() {
 }
 
 export function ProductViewer() {
-  return <div aria-label="Interactive abstract product system viewer" className="h-full min-h-[26rem] w-full" role="img"><Canvas camera={{ position: [0, 0, 4.5], fov: 42 }} dpr={[1, 1.5]}><Suspense fallback={null}><ambientLight intensity={0.55} /><pointLight color="#6c47ff" intensity={8} position={[2, 2, 3]} /><pointLight color="#00d4ff" intensity={5} position={[-2, -1, 2]} /><ProductShape /><OrbitControls enablePan={false} enableZoom={false} autoRotate autoRotateSpeed={0.45} /></Suspense></Canvas></div>;
+  const fallback = <ProductFallback />;
+  return <WebGLSafe fallback={fallback}><div aria-label="Interactive abstract product system viewer" className="h-full min-h-[26rem] w-full" role="img"><Canvas camera={{ position: [0, 0, 4.5], fov: 42 }} dpr={[1, 1.5]}><Suspense fallback={fallback}><ambientLight intensity={0.55} /><pointLight color="#6c47ff" intensity={8} position={[2, 2, 3]} /><pointLight color="#00d4ff" intensity={5} position={[-2, -1, 2]} /><ProductShape /><OrbitControls enablePan={false} enableZoom={false} autoRotate autoRotateSpeed={0.45} /></Suspense></Canvas></div></WebGLSafe>;
 }
